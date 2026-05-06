@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>婚禮相簿 - 分享幸福時刻</title>
+    <style>
+        /* 基本樣式 */
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        ::-webkit-scrollbar { display: none; }
+
+        /* 載入畫面 */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffffff;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 20; text-align: center; transition: opacity 0.8s ease-out;
+        }
+        .loading-text { font-size: 20px; color: #e66a81; line-height: 1.6; font-weight: bold; }
+        .loader { border: 5px solid #f3f3f3; border-top: 5px solid #e66a81; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* 主要內容框架 */
+        #content-frame {
+            width: 100%; height: 100%; border: none; display: block;
+        }
+
+        /* 懸浮按鈕 */
+        .floating-btn {
+            position: fixed; bottom: 30px; right: 20px; z-index: 30;
+            background: linear-gradient(145deg, #ff8da1, #e66a81);
+            color: white; padding: 12px 20px; border-radius: 50px;
+            text-decoration: none; font-size: 14px; font-weight: bold;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        .floating-btn:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+    <!-- 載入畫面 -->
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <div class="loading-text">
+            馬上進入上載頁面，<br>
+            請準備好您的相片！
+        </div>
+    </div>
+
+    <!-- 懸浮按鈕：請記得替換成你的 Google Drive 資料夾連結 -->
+    <a href="https://drive.google.com/drive/folders/1IxGIQbMiMGqAAGmTa669rDlspjsZ2Iq4?usp=sharing" 
+       target="_blank" 
+       class="floating-btn">
+        >> 觀看所有相片
+    </a>
+
+    <!-- 這個 iframe 會載入你的 Google Apps Script 應用程式 -->
+    <iframe id="content-frame" src=""></iframe>
+
+    <script>
+        // --- 設定區 ---
+        // !!! 極度重要：請將下方引號內的網址，替換成你的 Google Apps Script 網頁應用程式部署網址 !!!
+        const appScriptUrl = "https://script.google.com/macros/s/AKfycbyJYm8_3WHEoH34nM9vS0LGH0AOHlteaSK8-Xaa1lN4vv9T1i9XyAFhmlaeuq4mHtUohQ/exec";
+        
+        // --- 邏輯區 (無需修改) ---
+        const iframe = document.getElementById('content-frame');
+        const loadingScreen = document.getElementById('loading-screen');
+
+        // 設定 iframe 的來源
+        iframe.src = appScriptUrl;
+
+        // 當 iframe 載入完成後，隱藏載入畫面
+        iframe.onload = function() {
+            loadingScreen.style.opacity = '0';
+            // 動畫結束後，將其從畫面中移除，避免影響操作
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 800); // 這個時間要和 CSS 的 transition 時間一致
+        };
+    </script>
+
+</body>
+</html>
