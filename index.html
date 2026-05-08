@@ -60,22 +60,23 @@
         let fetchCount = 0;
         let currentVersion = "0";
 
-        // --- THE LISTENER ---
-  window.addEventListener("message", function(event) {
-    if (event.data === "OPEN_STATS") {
-      var reset = confirm("Total Fetches: " + fetchCount + "\n\nReset count?");
-      if (reset) fetchCount = 0;
-    }
-  });
+window.addEventListener("message", function(event) {
+        if (event.data === "GET_STATS") {
+            // Send the current count back to the iframe
+            event.source.postMessage({ type: "SEND_STATS", count: fetchCount }, "*");
+        }
+        if (event.data === "RESET_STATS") {
+            fetchCount = 0;
+        }
+    });
 
-  async function sync() {
-    try {
-      fetchCount++;
-      const res = await fetch(appScriptUrl + "?checkVersion=true");
-      const ver = await res.text();
-      currentVersion = ver;
-    } catch (e) {}
-  }
+    // Your existing heartbeat logic
+    async function track() {
+        try {
+            fetchCount++;
+            await fetch(appScriptUrl + "?checkVersion=true");
+        } catch(e) {}
+    }
 
         const iframe = document.getElementById('content-frame');
         iframe.src = appScriptUrl;
@@ -85,8 +86,8 @@
         };
 
         // Every 30 seconds
-        setInterval(sync, 30000);
-        sync();
+        setInterval(track, 30000);
+      
     </script>
 </body>
 </html>
