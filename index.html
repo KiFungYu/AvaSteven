@@ -100,17 +100,7 @@
         const ADMIN_PASS = "123"; // <--- CHANGE YOUR PASSWORD HERE
 
 
-        // 設定 iframe 的來源
-        iframe.src = appScriptUrl;
 
-        // 當 iframe 載入完成後，隱藏載入畫面
-        iframe.onload = function() {
-            loadingScreen.style.opacity = '0';
-            // 動畫結束後，將其從畫面中移除，避免影響操作
-            setTimeout(() => {
-                loadingScreen.style.display = 'none';
-            }, 800); // 這個時間要和 CSS 的 transition 時間一致
-        };
 
         function openAdminPanel() {
             const pw = prompt("Admin Password:");
@@ -135,7 +125,15 @@
                 console.log("Monitoring sync...");
             }
         }
-
+        
+        // 設定 iframe 的來源
+        iframe.src = appScriptUrl;
+        // 當 iframe 載入完成後，隱藏載入畫面
+        iframe.onload = () => {
+            document.getElementById('loading-screen').style.opacity = '0';
+            setTimeout(() => document.getElementById('loading-screen').style.display='none', 800);
+        };
+        
         setInterval(syncCheck, 30000); // Check every 30 seconds
         syncCheck();
         
