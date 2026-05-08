@@ -39,22 +39,6 @@
         /* The Iframe */
         iframe { width: 100%; height: 100%; border: none; display: block; }
         
-        /* Right Button (Guest View) */
-        .guest-btn {
-            right: 20px;
-            background: linear-gradient(135deg, #ff8da1, #e66a81);
-            color: white;
-        }
-
-        /* Left Button (Admin Panel) */
-        .admin-btn {
-            left: 20px;
-            background: #ffffff;
-            color: #888;
-            border: 1px solid #ddd;
-            font-size: 10px; /* Smaller text to stay discreet */
-            opacity: 0.6; /* Semi-transparent so it's not distracting */
-        }
         
     </style>
 </head>
@@ -63,11 +47,9 @@
         <div class="loader"></div>
         <p style="color:#e66a81; font-weight:bold; margin-top:15px;">載入中...</p>
         </div>
-
-    <a href="#" class="floating-btn admin-btn" onclick="openAdmin(); return false;">Admin Login</a>
-
+    
     <a href="https://drive.google.com/drive/folders/1IxGIQbMiMGqAAGmTa669rDlspjsZ2Iq4?usp=sharing" 
-       target="_blank" class="floating-btn guest-btn">>> 觀看所有相片</a>
+       target="_blank" class="floating-btn">>> 觀看所有相片</a>
 
     <iframe id="content-frame" src=""></iframe>
 
@@ -112,5 +94,6 @@
         setInterval(trackQuota, 30000);
         trackQuota();
     </script>
+    <a href="#" onclick="openAdmin(); return false;">Admin Login</a>
 </body>
 </html>
