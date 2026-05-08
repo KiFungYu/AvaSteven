@@ -78,6 +78,13 @@
             setTimeout(() => taps = 0, 2000);
         });
 
+        function renderPhotos(photos) {
+        const grid = document.getElementById('photo-grid');
+        grid.innerHTML = photos.map(url => 
+            `<img src="${url}" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px;">`
+        ).join('');
+        }
+
         async function syncGallery() {
             try {
                 fetchCount++; // 1st Fetch: Check if version changed
@@ -98,12 +105,7 @@
         setInterval(syncGallery, 30000); // Check every 30s
         syncGallery();
 
-        function renderPhotos(photos) {
-        const grid = document.getElementById('photo-grid');
-        grid.innerHTML = photos.map(url => 
-            `<img src="${url}" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px;">`
-        ).join('');
-        }
+
         // 設定 iframe 的來源
         iframe.src = appScriptUrl;
         // 當 iframe 載入完成後，隱藏載入畫面
