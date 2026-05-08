@@ -57,9 +57,8 @@
         const iframe = document.getElementById('content-frame');
         const loadingScreen = document.getElementById('loading-screen');
         // --- Tracker Various ---
-        let currentVersion = "0";
         let fetchCount = 0;
-        let taps = 0;
+        let currentVersion = "0";
 
         // 設定 iframe 的來源
         iframe.src = appScriptUrl;
@@ -71,6 +70,41 @@
                 loadingScreen.style.display = 'none';
             }, 800); // 這個時間要和 CSS 的 transition 時間一致
         };
+
+        // --- Listen for message from the iframe banner ---
+        window.addEventListener("message", (event) => {
+        if (event.data === "showDebug") {
+            const reset = confirm(`連線統計 (Debug):\n總讀取次數: ${fetchCount}\n\n按一下「確定」來重設計數。`);
+            if (reset) fetchCount = 0;
+            }
+        }, false);
+
+        // --- Heartbeat Logic ---
+        async function syncGallery() {
+            try {
+                fetchCount++; // Heartbeat fetch
+                const vRes = await fetch(`${appScriptUrl}?checkVersion=true`);
+                const latestVersion = await vRes.text();
+
+            if (latestVersion !== currentVersion) {
+                // If the version changed, it counts as a data fetch too
+                currentVersion = latestVersion;
+                // Note: The upload.html inside the iframe will handle 
+                // the actual photo loading, we just track the syncs here.
+                }
+            } catch (e) { console.log("Sync check failed"); }
+        }
+
+    // Initialize
+    iframe.src = appScriptUrl;
+    iframe.onload = () => {
+        loadingScreen.style.opacity = '0';
+        setTimeout(() => { loadingScreen.style.display = 'none'; }, 800);
+    };
+
+    setInterval(syncGallery, 30000); // Check every 30s
+    syncGallery();
+        
     </script>
 
 </body>
