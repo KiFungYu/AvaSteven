@@ -38,8 +38,6 @@
     </style>
 </head>
 <body>
-
-    <!-- 載入畫面 -->
     <div id="loading-screen">
         <div class="loader"></div>
         <div class="loading-text">
@@ -48,16 +46,17 @@
         </div>
     </div>
 
-    <!-- 懸浮按鈕：請記得替換成你的 Google Drive 資料夾連結 -->
+    <div id="live-gallery-header" style="text-align:center; padding:10px; background:#fff; cursor:pointer;">
+        <h2 style="color:#e66a81; margin:0; font-size:1.2rem;">✨ Ava & Steven 婚禮相簿 ✨</h2>
+    </div>
+
+    <div id="photo-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(100px, 1fr)); gap:5px; padding:10px; max-height:30vh; overflow-y:auto;">
+    </div>
+
     <a href="https://drive.google.com/drive/folders/1IxGIQbMiMGqAAGmTa669rDlspjsZ2Iq4?usp=sharing" 
-       target="_blank" 
-       class="floating-btn">
-        >> 觀看所有相片
-    </a>
+       target="_blank" class="floating-btn">>> 觀看所有相片</a>
 
-    <!-- 這個 iframe 會載入你的 Google Apps Script 應用程式 -->
     <iframe id="content-frame" src=""></iframe>
-
     <script>
         // --- 設定區 ---
         const appScriptUrl = "https://script.google.com/macros/s/AKfycbxwMIFcxR7hc08esG_LlEILWTnXdrD8q8NlJasAw0K1idV06O9UZLrs7SfYT4Wkk6NokA/exec";
